@@ -23,7 +23,7 @@ class CodeCreator
     hints_arr = [corect_positn_arr.length, wrong_positon_arr.length]
   end
 
-  def calculate_hints(corect_positn_arr, wrong_positon_arr)
-    # hints_hash = { 'Correct Positions:' => corect_positn_arr.length, 'Wrong Positions:' => wrong_positon_arr.length }
-  end
+  # def calculate_hints(corect_positn_arr, wrong_positon_arr)
+  #   # hints_hash = { 'Correct Positions:' => corect_positn_arr.length, 'Wrong Positions:' => wrong_positon_arr.length }
+  # end
 end

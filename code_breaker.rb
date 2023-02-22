@@ -9,7 +9,7 @@ class CodeBreaker
     puts 'This is placeholder for human cater_breaker_logic'
   end
 
-  def cater_cmputr_breakr
+  def cater_cmputr_breakr(humn_secrt_choice, comptr_turn_choice)
     puts 'This is placeholder for computer cater_breaker_logic'
   end
 end

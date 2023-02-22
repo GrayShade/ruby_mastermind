@@ -18,12 +18,28 @@ class HumanPlayer < Player
   end
 
   def inpt_choice
-    input = gets.chomp.strip.downcase.split(' ')
+    input = gets.chomp.strip.downcase
+    return input if input.to_s == 'q'
+
+    input = input.split(' ')
     until validate_input(input) == true
       puts
-      puts "Wrong Choice!!! \nPick Again:"
-      input = gets.chomp.strip.downcase.split(' ')
+      puts "Wrong Choice!!! \nPick Again:  (q to quit)"
+      input = gets.chomp.strip.downcase
+      return input if input.to_s == 'q'
+
+      input = input.split(' ')
       validate_input(input)
+    end
+    input
+  end
+
+  def end_game_input
+    input = gets.chomp.strip.downcase
+    until %w[y n].include?(input)
+      puts
+      puts "Wrong Choice!!! \nPick Again:"
+      input = gets.chomp.strip.downcase
     end
     input
   end

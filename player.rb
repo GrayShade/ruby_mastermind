@@ -17,6 +17,8 @@ class Player
   # end
 
   def validate_input(input)
+    # return true if input.to_s.downcase == 'q'
+    # input = input.split(' ')
     input.is_a?(Array) && input.length == 4 && input.uniq.length == 4 && input.all? { |ele| show_colors_utilmod.include?(ele) }
   end
 end
