@@ -5,12 +5,11 @@ class CodeBreaker
   def initialize
 
   end
-  def cater_humn_breakr(plyr_role, color_choice)
+  def cater_humn_breakr(humn_plyr_role, color_choice)
     puts 'This is placeholder for human cater_breaker_logic'
   end
 
   def cater_cmputr_breakr
-    puts 'This is placeholder for human cater_breaker_logic'
+    puts 'This is placeholder for computer cater_breaker_logic'
   end
 end
-

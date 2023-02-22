@@ -10,31 +10,33 @@ class Board
   end
 
   def display_creater_screen
-    puts 'placeholder for creater screen'
+    puts
+    puts 'Computer is ready to guess...'
+    puts 'Pick 4 colors with spaces between them...'
+    print "Choose from: #{show_colors_utilmod}\n"
   end
 
   def display_breaker_screen
     puts
     puts 'Pick 4 colors with spaces between them...'
-    # puts 'You can also type first letters of colors with spaces only...'
     print "Choose from: #{show_colors_utilmod}\n"
   end
 
-  def show_turn_output(plyr_role, turn_result, guesses)
+  def show_turn_output(humn_plyr_role, turn_result, guesses)
     # puts 'This is a placeholder for show_turn_output method'
-    return unless plyr_role == 'b'
+    return unless humn_plyr_role == 'b'
 
     puts "Corect Positions: #{turn_result[0]}"
     puts "Wrong Positions:  #{turn_result[1]}"
     puts
     puts "Guesses Left: #{guesses}\n"
-    print "Choose from:  #{show_colors_utilmod}\n"
+    print "Choice      : #{show_colors_utilmod}\n"
     puts 'Pick Again:'
   end
 
-  def announce_result(plyr_role, turn_result, inpt_secrt_choice)
+  def announce_result(humn_plyr_role, turn_result, inpt_secrt_choice)
     puts
-    if turn_result[0] == 4 && plyr_role == 'b'
+    if turn_result[0] == 4 && humn_plyr_role == 'b'
       puts 'you win!'
     else
       puts 'You lost! Computer Wins'

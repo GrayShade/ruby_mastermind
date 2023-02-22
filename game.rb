@@ -10,11 +10,9 @@ require_relative 'code_creater'
 # This is intended to be a class, for now atleast
 class Game
   attr_accessor :guesses, :board_obj, :plyr_obj, :humn_plyr_obj,
-                :comptr_plyr_obj, :humn_logic_obj, :comptr_logic_obj
+                :comptr_plyr_obj, :breaker_logic_obj, :creater_logic_obj
 
-  def initialize
-    
-  end
+  def initialize; end
   # include Board
 
   def start_game
@@ -30,39 +28,46 @@ class Game
     self.plyr_obj = Player.new
     self.humn_plyr_obj = HumanPlayer.new
     self.comptr_plyr_obj = ComputerPlayer.new
-    self.humn_logic_obj = CodeBreaker.new
-    self.comptr_logic_obj = CodeCreator.new
+    self.breaker_logic_obj = CodeBreaker.new
+    self.creater_logic_obj = CodeCreator.new
   end
 
-  def play_game()
-    plyr_role = plyr_obj.select_role
-    if plyr_role == 'c'
+  def play_game
+    humn_plyr_role = humn_plyr_obj.select_role
+    if humn_plyr_role == 'c'
       board_obj.display_creater_screen
-    else
-      board_obj.display_breaker_screen
-      inpt_secrt_choice = comptr_plyr_obj.inpt_secrt_choice
+      humn_secrt_choice = humn_plyr_obj.inpt_choice
       while guesses >= 1
-        humn_color_choice = humn_plyr_obj.input_color_choice
-        
-        turn_result = comptr_logic_obj.cater_cmputr_creatr(inpt_secrt_choice, humn_color_choice)
+        comptr_color_choice = comptr_plyr_obj.inpt_secrt_choice
+        turn_result = breaker_logic_obj.cater_cmputr_breakr(humn_secrt_choice, comptr_color_choice)
         # Use self for setter reassignment:
         self.guesses = guesses - 1
-        process_result(plyr_role, turn_result, inpt_secrt_choice)
+        process_result(humn_plyr_role, turn_result, humn_secrt_choice)
         # board_obj.show_turn_output()
       end
-      
-    end
-    # display(plyr_role)
-  end
-
-  def process_result(plyr_role, turn_result, inpt_secrt_choice)
-    if turn_result[0] == 4 || guesses.zero?
-      board_obj.announce_result(plyr_role, turn_result, inpt_secrt_choice)
     else
-      board_obj.show_turn_output(plyr_role, turn_result, guesses)
+      board_obj.display_breaker_screen
+      comptr_secrt_choice = comptr_plyr_obj.inpt_secrt_choice
+      while guesses >= 1
+        humn_turn_choice = humn_plyr_obj.inpt_choice
+        turn_result = creater_logic_obj.cater_cmputr_creatr(comptr_secrt_choice, humn_turn_choice)
+        # Use self for setter reassignment:
+        self.guesses = guesses - 1
+        process_result(humn_plyr_role, turn_result, comptr_secrt_choice)
+        # board_obj.show_turn_output()
+      end
+
     end
+    # display(humn_plyr_role)
   end
 
+  def process_result(humn_plyr_role, turn_result, inpt_secrt_choice)
+    if turn_result[0] == 4 || guesses.zero?
+      board_obj.announce_result(humn_plyr_role, turn_result, inpt_secrt_choice)
+    else
+      board_obj.show_turn_output(humn_plyr_role, turn_result, guesses)
+    end
+  end
 end
 
 game_obj = Game.new
