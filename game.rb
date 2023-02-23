@@ -17,7 +17,7 @@ class Game
   def start_game
     puts 'Welcome to the Mastermind game...'
     puts 'This will truly test your wits to the edge...'
-    self.guesses = 2
+    self.guesses = 5
     create_objects
 
     play_game
@@ -34,31 +34,36 @@ class Game
 
   def play_game
     puts 'Game Begins...'
-    humn_plyr_role = humn_plyr_obj.select_role
+    # humn_plyr_role = humn_plyr_obj.select_role
+    humn_plyr_role = 'c'
+
     humn_plyr_role == 'c' ? proces_creatr_role(humn_plyr_role) : proces_breakr_role(humn_plyr_role)
   end
 
   def proces_creatr_role(humn_plyr_role)
     board_obj.display_creater_screen
-    humn_secrt_choice = humn_plyr_obj.inpt_choice
+    final_arr = []
+    # humn_secrt_choice = humn_plyr_obj.inpt_choice
+    humn_secrt_choice = %w[r r r o]
     if humn_secrt_choice == 'q'
       end_game
       # return or lines after end_game function will start execution after
       # end_game sub functions completion:
       return
     end
+    turn_counter = 1
     while guesses >= 1
-      comptr_turn_choice = comptr_plyr_obj.inpt_secrt_choice
-      turn_result = breaker_logic_obj.cater_cmputr_breakr(humn_secrt_choice, comptr_turn_choice)
+      turn_result = breaker_logic_obj.cater_cmputr_breakr(humn_secrt_choice, guesses, turn_counter, final_arr)
+      turn_counter += 1
       # Use self for setter assignment or reassignment:
       self.guesses = guesses - 1
-      process_result(humn_plyr_role, turn_result = [0, 0], humn_secrt_choice)
+      process_result(humn_plyr_role, turn_result, humn_secrt_choice)
     end
   end
 
   def proces_breakr_role(humn_plyr_role)
     board_obj.display_breaker_screen
-    comptr_secrt_choice = comptr_plyr_obj.inpt_secrt_choice
+    comptr_secrt_choice = comptr_plyr_obj.inpt_choice
     while guesses >= 1
       humn_turn_choice = humn_plyr_obj.inpt_choice
       if humn_turn_choice == 'q'
@@ -74,9 +79,10 @@ class Game
     end
   end
 
-  def process_result(humn_plyr_role, turn_result, inpt_secrt_choice)
+  def process_result(humn_plyr_role, turn_result, comptr_secrt_choice)
     if turn_result[0] == 4 || guesses.zero?
-      board_obj.define_announce_result(humn_plyr_role, turn_result, inpt_secrt_choice)
+      board_obj.define_announce_result(humn_plyr_role, turn_result, comptr_secrt_choice)
+      end_game
     else
       board_obj.show_turn_output(humn_plyr_role, turn_result, guesses)
     end
@@ -84,9 +90,10 @@ class Game
 
   def end_game
     board_obj.display_end_screen
-    input = humn_plyr_obj.end_game_input
+    # input = humn_plyr_obj.end_game_input
+    input = 'n'
     if input == 'y'
-      self.guesses = 2
+      self.guesses = 5
       play_game
     else
       puts 'Game Exits...'

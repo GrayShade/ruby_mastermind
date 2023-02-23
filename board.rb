@@ -36,11 +36,11 @@ class Board
 
   def define_announce_result(humn_plyr_role, turn_result, inpt_sec_choice)
     puts
-    # if humn_plyr_role == 'b'
-    anounce_result(%w[You Computer], humn_plyr_role, turn_result, inpt_sec_choice)
-    # else
-    # anounce_result(['You, Computer'], humn_plyr_role, turn_result, inpt_sec_choice)
-    # end
+    if humn_plyr_role == 'b'
+      anounce_result(%w[You Computer], humn_plyr_role, turn_result, inpt_sec_choice)
+    else
+      anounce_result(%w[Computer You], humn_plyr_role, turn_result, inpt_sec_choice)
+    end
   end
 
   def anounce_result(word_arr, humn_plyr_role, turn_result, inpt_sec_choice)
