@@ -17,7 +17,7 @@ class Game
   def start_game
     puts 'Welcome to the Mastermind game...'
     puts 'This will truly test your wits to the edge...'
-    self.guesses = 5
+    self.guesses = 12
     create_objects
 
     play_game
@@ -44,7 +44,7 @@ class Game
     board_obj.display_creater_screen
     final_arr = []
     # humn_secrt_choice = humn_plyr_obj.inpt_choice
-    humn_secrt_choice = %w[r r r o]
+    humn_secrt_choice = %w[w b g r]
     if humn_secrt_choice == 'q'
       end_game
       # return or lines after end_game function will start execution after
@@ -52,6 +52,9 @@ class Game
       return
     end
     turn_counter = 1
+    if turn_counter == 8
+      puts 'delete it'
+    end
     while guesses >= 1
       turn_result = breaker_logic_obj.cater_cmputr_breakr(humn_secrt_choice, guesses, turn_counter, final_arr)
       turn_counter += 1
