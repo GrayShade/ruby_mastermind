@@ -80,7 +80,7 @@ class Game
       board_obj.define_announce_result(humn_plyr_role, turn_result, comptr_secrt_choice)
       end_game
     else
-      board_obj.show_turn_output(turn_result, guesses)
+      board_obj.show_turn_output(humn_plyr_role, turn_result, guesses)
     end
   end
 

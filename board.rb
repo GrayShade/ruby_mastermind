@@ -20,16 +20,18 @@ class Board
     print "Choose from: #{show_colors_utilmod}\n"
   end
 
-  def show_turn_output(turn_result, guesses)
-    # puts 'This is a placeholder for show_turn_output method'
-    # return unless humn_plyr_role == 'b'
-
+  def show_turn_output(humn_plyr_role, turn_result, guesses)
     puts "Corect Positions: #{turn_result[0]}"
     puts "Wrong Positions:  #{turn_result[1]}"
     puts
     puts "Guesses Left: #{guesses}\n"
     print "Choice      : #{show_colors_utilmod}\n"
-    puts 'Pick Again:'
+    if humn_plyr_role == 'b'
+      puts 'Pick Again:'
+    else
+      puts 'Computer Is Guessing...'
+      sleep(1)
+    end
   end
 
   def define_announce_result(humn_plyr_role, turn_result, inpt_sec_choice)
