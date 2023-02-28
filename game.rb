@@ -44,7 +44,7 @@ class Game
     board_obj.display_creater_screen
     final_arr = []
     # humn_secrt_choice = humn_plyr_obj.inpt_choice
-    humn_secrt_choice = %w[w b g r]
+    humn_secrt_choice = %w[r g o c]
     if humn_secrt_choice == 'q'
       end_game
       # return or lines after end_game function will start execution after
@@ -52,9 +52,6 @@ class Game
       return
     end
     turn_counter = 1
-    if turn_counter == 8
-      puts 'delete it'
-    end
     while guesses >= 1
       turn_result = breaker_logic_obj.cater_cmputr_breakr(humn_secrt_choice, guesses, turn_counter, final_arr)
       turn_counter += 1
