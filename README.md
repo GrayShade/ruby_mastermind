@@ -10,7 +10,7 @@ This is basically a game about guessing the color. 6 colors array is given. Play
 ### Structural Overview:
 On the note of structure of project, it comprises of seven class files & one module file named as `utilmod.rb`. Module just contains a utility function. `board.rb` is used to display data on the console, `game.rb` is main code file. `player.rb` contains parent class of `ComputerPlayer` & `HumanPlayer` classes. Game is started via a `Game` class object. This class can access all other classes but no other class can access this class or other class directly. Controlling of project is done via `Game` class.
 
-## Computer Thinking Logic:
+### Computer Thinking Logic:
 As far as winning goes, It wins some & loses some. Losing ratio increases when all elements are random. Multiple same elements are more the merrier for computer player to guess. Winning ratio of computer player is quite satisfactory for me & am quite happy with it.
 it boils down to many factors & code pieces but a pretty substantial way I use is described below.
 
