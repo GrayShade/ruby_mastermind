@@ -4,7 +4,7 @@ require_relative 'utilmod'
 # this class defines Logic for human player
 class CodeBreaker
   attr_accessor :main_arr, :hints_arr, :colors_utilmod, :skip_positn_hash, :skip_arr,
-                :curent_choice, :corect_positn_arr, :wrong_positon_arr, :sure_presnt, :all_found
+                :curent_choice, :sure_presnt, :all_found
 
   include UtilMod
   def initialize
@@ -13,29 +13,36 @@ class CodeBreaker
     self.main_arr = Array.new(4, 0)
     self.colors_utilmod = show_colors_utilmod
     self.all_found = false
+    self.sure_presnt = [] # all elements which are 
   end
 
-  def cater_cmputr_breakr(humn_secrt_choice, guesses, turn_counter, sure_presnt)
-    self.corect_positn_arr = []
-    self.wrong_positon_arr = []
+  def cater_cmputr_breakr(humn_secrt_choice, turn_counter)
     self.hints_arr = []
-    self.sure_presnt = sure_presnt
-    print "sec choice: #{humn_secrt_choice}\n"
+
     if main_arr.all? { |ele| ele.to_s == '0' } # if main_array is empty yet
-      self.main_arr = check_first_find(humn_secrt_choice, guesses, turn_counter)
+      self.curent_choice = insert_elements
     elsif main_arr.any? { |ele| ele.to_s != '0' } # if main_array is not empty
-      self.main_arr = check_first_find(humn_secrt_choice, guesses, turn_counter)
+      self.curent_choice = insert_elements
     end
-    print "main_arr: #{main_arr}\n"
-    print "sure_presnt: #{sure_presnt}\n"
-    print "skip_arr: #{skip_arr}\n"
+
+    skip_arr << curent_choice unless skip_arr.include?(curent_choice)
+    print "curent_choice: #{curent_choice}\n"
+    self.hints_arr = create_hints_array(humn_secrt_choice, curent_choice) # checking matches
+    print "hints_arr: #{hints_arr}\n"
+    if hints_arr == [4, 0] && humn_secrt_choice == curent_choice # if all elements match
+      cater_if_all_match
+    elsif hints_arr != [0, 0] # if any element match
+      cater_if_any_match(humn_secrt_choice)
+    elsif hints_arr == [0, 0] # if no match found
+      cater_if_no_match
+    end
     hints_arr
   end
 
-  def check_first_find(humn_secrt_choice, _guesses, _turn_counter)
+  def insert_elements
     # if there is no element found yet, take each color array from color module & check it
     #  against the computer choice. If not matches, take next & so. Also, mark that element as
-    # skip_able for the future
+    # skip_able for the future to not include it.
     if main_arr.any? { |ele| ele.to_s == '0' }
       sample_ele = colors_utilmod.sample(1)[0] # 0 is used here to get ele instead of [ele]
       sample_ele = colors_utilmod.sample(1)[0] while skip_arr.include?(sample_ele)
@@ -47,66 +54,68 @@ class CodeBreaker
       self.curent_choice = main_arr
       self.all_found = true
     else
+      # print "skip_positn_hash: #{skip_positn_hash}\n"
+
       # if all eles found & its not first time after that, generate a
       # random one from them:
       sample_arr = main_arr.sample(4)
-      sample_arr = main_arr.sample(4) while skip_arr.include?(sample_arr) || check_skip_positions?(sample_arr) == false
+      sample_arr = main_arr.sample(4) while skip_arr.include?(sample_arr) || skip_this_position?(sample_arr) == true
       self.curent_choice = sample_arr
     end
-    # so next time, no need for this exact combination.
-    skip_arr << curent_choice unless skip_arr.include?(curent_choice)
-    print "curent_choice: #{curent_choice}\n"
-    self.hints_arr = check_positions(humn_secrt_choice, curent_choice) # checking matches
-    print "hints_arr: #{hints_arr}\n"
-    if hints_arr == [4, 0] && humn_secrt_choice == curent_choice # if all match
-      main_arr.each_with_index { |ele, idx| main_arr[idx] = ele if curent_choice.include?(ele) }
-      print "main_arr: #{main_arr}\n"
-    elsif hints_arr != [0, 0] # if any match found:
-
-      if hints_arr == [0, 4] # if all matches are on wrong positions
-        curent_choice.each_with_index do |ele, idx|
-          # then make a key of each index & store all elements in an array against
-          #  this key. i.e, {0=>["o", "c"], 1=>["c", "r"]}
-          skip_positn_hash[idx] += [ele] unless skip_positn_hash[idx].include?(ele)
-        end
-      end
-      humn_secrt_choice.each_with_index do |ele, _idx|
-        next unless sure_presnt.include?(ele) && curent_choice.include?(ele) && main_arr.include?(0)
-
-        # as we need to replace zeros with found ele in ascending order so that computer
-        #   player knows which eles are found but not their actual position:
-        first_zero_index = main_arr.find_index(0) # find_index returns first found index
-        main_arr[first_zero_index] = ele
-        print "main_arr: #{main_arr}\n"
-      end
-      print "main_arr: #{main_arr}\n"
-      print "skip_position_hash: #{skip_positn_hash}\n"
-    elsif hints_arr == [0, 0] # if no match found
-      # if no match found, put it in skip_arr. (redundent due to subsequent line???)
-      curent_choice.each { |ele| skip_arr << ele unless skip_arr.include?(ele) }
-    end
-    main_arr
+    curent_choice
   end
 
-  def check_skip_positions?(sample_arr)
+  def cater_if_all_match
+    main_arr.each_with_index { |ele, idx| main_arr[idx] = ele if curent_choice.include?(ele) }
+  end
+
+  def cater_if_any_match(humn_secrt_choice)
+    if hints_arr == [0, 4] # if all matches are on wrong positions
+      curent_choice.each_with_index do |ele, idx|
+        # then make a key of each index & store all elements in an array against
+        #  this key. i.e, {0=>["o", "c"], 1=>["c", "r"]}
+        skip_positn_hash[idx] += [ele] unless skip_positn_hash[idx].include?(ele)
+      end
+    end
+    humn_secrt_choice.each_with_index do |ele, _idx|
+      next unless sure_presnt.include?(ele) && curent_choice.include?(ele) && main_arr.include?(0)
+
+      # as we need to replace zeros with found ele in ascending order so that computer
+      #   player knows which eles are found but not their actual position:
+      first_zero_index = main_arr.find_index(0) # find_index returns first found index
+      main_arr[first_zero_index] = ele
+    end
+  end
+
+  def cater_if_no_match
+    # if no match found, put it in skip_arr:
+    curent_choice.each { |ele| skip_arr << ele unless skip_arr.include?(ele) }
+  end
+
+  def skip_this_position?(sample_arr)
     skip_positn_hash.each do |k, _v|
       sample_arr.each_with_index do |ele, idx|
-        print "#{sample_arr} should be skipped \n" if skip_positn_hash[k].include?(ele) && idx == k
-        return false if skip_positn_hash[k].include?(ele) && idx == k
+        return true if skip_positn_hash[k].include?(ele) && idx == k
       end
     end
-    true
+    false
   end
 
-  def check_positions(humn_secrt_choice, curent_choice) # for hints arr basically
+  def create_hints_array(humn_secrt_choice, curent_choice) # for hints arr basically
+    corect_positn_arr = []
+    wrong_positon_arr = []
     humn_secrt_choice.each_with_index do |ele, idx|
       curent_choice.each_with_index do |ele2, idx2|
         if ele == ele2 && idx == idx2
-          corect_positn_arr[idx] = ele
-          print "corect_positn_arr: #{corect_positn_arr}\n"
+          corect_positn_arr[idx] = ele # these element are present on correct indices
+          # sure_present can only be for correct_position_arr as in case of wrong positions
+          #  like [0, 3], there is no gurentee that which 4th element is actually not in secret
+          #  choice:
           sure_presnt << ele unless sure_presnt.include?(ele)
+        # wrong_positon_arr needs to be checked seperately to not fill wrong position array
+        #  in case these values are already in the correct position array:
         elsif ele == ele2 && idx != idx2 && corect_positn_arr[idx] != ele
-          wrong_positon_arr[idx] = ele
+          wrong_positon_arr[idx] = ele # these element are present but on wrong indices
         end
       end
     end

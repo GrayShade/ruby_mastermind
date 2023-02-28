@@ -7,10 +7,6 @@ class ComputerPlayer < Player
   def initialize; end
 
   def inpt_choice
-
-  end
-
-  def inpt_choice
     input = show_colors_utilmod.sample(4)
     # there was no need for validating computer input below, but utilized it to
     #  just use inheritence from parent in this particular project.

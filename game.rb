@@ -18,9 +18,14 @@ class Game
     puts 'Welcome to the Mastermind game...'
     puts 'This will truly test your wits to the edge...'
     self.guesses = 12
-    create_objects
-
     play_game
+  end
+
+  def play_game
+    puts 'Game Begins...'
+    create_objects
+    humn_plyr_role = humn_plyr_obj.select_role
+    humn_plyr_role == 'c' ? proces_creatr_role(humn_plyr_role) : proces_breakr_role(humn_plyr_role)
   end
 
   def create_objects
@@ -32,19 +37,10 @@ class Game
     self.creater_logic_obj = CodeCreator.new
   end
 
-  def play_game
-    puts 'Game Begins...'
-    # humn_plyr_role = humn_plyr_obj.select_role
-    humn_plyr_role = 'c'
-
-    humn_plyr_role == 'c' ? proces_creatr_role(humn_plyr_role) : proces_breakr_role(humn_plyr_role)
-  end
-
   def proces_creatr_role(humn_plyr_role)
     board_obj.display_creater_screen
-    final_arr = []
-    # humn_secrt_choice = humn_plyr_obj.inpt_choice
-    humn_secrt_choice = %w[r g o c]
+    humn_secrt_choice = humn_plyr_obj.inpt_choice
+    # humn_secrt_choice = %w[r g o c]
     if humn_secrt_choice == 'q'
       end_game
       # return or lines after end_game function will start execution after
@@ -53,7 +49,7 @@ class Game
     end
     turn_counter = 1
     while guesses >= 1
-      turn_result = breaker_logic_obj.cater_cmputr_breakr(humn_secrt_choice, guesses, turn_counter, final_arr)
+      turn_result = breaker_logic_obj.cater_cmputr_breakr(humn_secrt_choice, turn_counter)
       turn_counter += 1
       # Use self for setter assignment or reassignment:
       self.guesses = guesses - 1
@@ -84,16 +80,15 @@ class Game
       board_obj.define_announce_result(humn_plyr_role, turn_result, comptr_secrt_choice)
       end_game
     else
-      board_obj.show_turn_output(humn_plyr_role, turn_result, guesses)
+      board_obj.show_turn_output(turn_result, guesses)
     end
   end
 
   def end_game
     board_obj.display_end_screen
-    # input = humn_plyr_obj.end_game_input
-    input = 'n'
+    input = humn_plyr_obj.end_game_input
     if input == 'y'
-      self.guesses = 5
+      self.guesses = 12
       play_game
     else
       puts 'Game Exits...'

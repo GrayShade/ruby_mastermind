@@ -43,15 +43,4 @@ class HumanPlayer < Player
     end
     input
   end
-
-  # def inpt_secrt_choice
-  #   input = gets.chomp.strip.downcase.split(' ')
-  #   until validate_input(input) == true
-  #     puts
-  #     puts "Wrong Choice!!! \nPick Again:"
-  #     input = gets.chomp.strip.downcase.split(' ')
-  #     validate_input(input)
-  #   end
-  #   input
-  # end
 end

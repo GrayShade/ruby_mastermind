@@ -1,13 +1,11 @@
-require_relative 'utilmod'
 # frozen_string_literal: false
+
+require_relative 'utilmod'
 
 # This is intended to be a module as there will be only methods or will be?
 class Board
   include UtilMod
-  # attr_reader :guesses
-  def initialize
-    # guesses = 12
-  end
+  def initialize; end
 
   def display_creater_screen
     puts
@@ -22,7 +20,7 @@ class Board
     print "Choose from: #{show_colors_utilmod}\n"
   end
 
-  def show_turn_output(_humn_plyr_role, turn_result, guesses)
+  def show_turn_output(turn_result, guesses)
     # puts 'This is a placeholder for show_turn_output method'
     # return unless humn_plyr_role == 'b'
 
