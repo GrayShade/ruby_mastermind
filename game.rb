@@ -21,78 +21,83 @@ class Game
     play_game
   end
 
-  def play_game
-    puts 'Game Begins...'
-    create_objects
-    humn_plyr_role = humn_plyr_obj.select_role
-    humn_plyr_role == 'c' ? proces_creatr_role(humn_plyr_role) : proces_breakr_role(humn_plyr_role)
-  end
+  private
 
-  def create_objects
-    self.board_obj = Board.new
-    self.plyr_obj = Player.new
-    self.humn_plyr_obj = HumanPlayer.new
-    self.comptr_plyr_obj = ComputerPlayer.new
-    self.breaker_logic_obj = CodeBreaker.new
-    self.creater_logic_obj = CodeCreator.new
-  end
-
-  def proces_creatr_role(humn_plyr_role)
-    board_obj.display_creater_screen
-    humn_secrt_choice = humn_plyr_obj.inpt_choice
-    # humn_secrt_choice = %w[r g o c]
-    if humn_secrt_choice == 'q'
-      end_game
-      # return or lines after end_game function will start execution after
-      # end_game sub functions completion:
-      return
+  # private begin block:
+  begin
+    def play_game
+      puts 'Game Begins...'
+      create_objects
+      humn_plyr_role = humn_plyr_obj.select_role
+      humn_plyr_role == 'c' ? proces_creatr_role(humn_plyr_role) : proces_breakr_role(humn_plyr_role)
     end
-    turn_counter = 1
-    while guesses >= 1
-      turn_result = breaker_logic_obj.cater_cmputr_breakr(humn_secrt_choice, turn_counter)
-      turn_counter += 1
-      # Use self for setter assignment or reassignment:
-      self.guesses = guesses - 1
-      process_result(humn_plyr_role, turn_result, humn_secrt_choice)
-    end
-  end
 
-  def proces_breakr_role(humn_plyr_role)
-    board_obj.display_breaker_screen
-    comptr_secrt_choice = comptr_plyr_obj.inpt_choice
-    while guesses >= 1
-      humn_turn_choice = humn_plyr_obj.inpt_choice
-      if humn_turn_choice == 'q'
+    def create_objects
+      self.board_obj = Board.new
+      self.plyr_obj = Player.new
+      self.humn_plyr_obj = HumanPlayer.new
+      self.comptr_plyr_obj = ComputerPlayer.new
+      self.breaker_logic_obj = CodeBreaker.new
+      self.creater_logic_obj = CodeCreator.new
+    end
+
+    def proces_creatr_role(humn_plyr_role)
+      board_obj.display_creater_screen
+      humn_secrt_choice = humn_plyr_obj.inpt_choice
+      # humn_secrt_choice = %w[r g o c]
+      if humn_secrt_choice == 'q'
         end_game
         # return or lines after end_game function will start execution after
         # end_game sub functions completion:
         return
       end
-      turn_result = creater_logic_obj.cater_cmputr_creatr(comptr_secrt_choice, humn_turn_choice)
-      # Use self for setter assignment or reassignment:
-      self.guesses = guesses - 1
-      process_result(humn_plyr_role, turn_result, comptr_secrt_choice)
+      turn_counter = 1
+      while guesses >= 1
+        turn_result = breaker_logic_obj.cater_cmputr_breakr(humn_secrt_choice, turn_counter)
+        turn_counter += 1
+        # Use self for setter assignment or reassignment:
+        self.guesses = guesses - 1
+        process_result(humn_plyr_role, turn_result, humn_secrt_choice)
+      end
     end
-  end
 
-  def process_result(humn_plyr_role, turn_result, comptr_secrt_choice)
-    if turn_result[0] == 4 || guesses.zero?
-      board_obj.define_announce_result(humn_plyr_role, turn_result, comptr_secrt_choice)
-      end_game
-    else
-      board_obj.show_turn_output(humn_plyr_role, turn_result, guesses)
+    def proces_breakr_role(humn_plyr_role)
+      board_obj.display_breaker_screen
+      comptr_secrt_choice = comptr_plyr_obj.inpt_choice
+      while guesses >= 1
+        humn_turn_choice = humn_plyr_obj.inpt_choice
+        if humn_turn_choice == 'q'
+          end_game
+          # return or lines after end_game function will start execution after
+          # end_game sub functions completion:
+          return
+        end
+        turn_result = creater_logic_obj.cater_cmputr_creatr(comptr_secrt_choice, humn_turn_choice)
+        # Use self for setter assignment or reassignment:
+        self.guesses = guesses - 1
+        process_result(humn_plyr_role, turn_result, comptr_secrt_choice)
+      end
     end
-  end
 
-  def end_game
-    board_obj.display_end_screen
-    input = humn_plyr_obj.end_game_input
-    if input == 'y'
-      self.guesses = 12
-      play_game
-    else
-      puts 'Game Exits...'
-      exit
+    def process_result(humn_plyr_role, turn_result, comptr_secrt_choice)
+      if turn_result[0] == 4 || guesses.zero?
+        board_obj.define_announce_result(humn_plyr_role, turn_result, comptr_secrt_choice)
+        end_game
+      else
+        board_obj.show_turn_output(humn_plyr_role, turn_result, guesses)
+      end
+    end
+
+    def end_game
+      board_obj.display_end_screen
+      input = humn_plyr_obj.end_game_input
+      if input == 'y'
+        self.guesses = 12
+        play_game
+      else
+        puts 'Game Exits...'
+        exit
+      end
     end
   end
 end

@@ -27,7 +27,7 @@ class Board
     puts "Guesses Left: #{guesses}\n"
     print "Choice      : #{show_colors_utilmod}\n"
     if humn_plyr_role == 'b'
-      puts 'Pick Again:'
+      puts 'Enter Choice:  (q to quit)'
     else
       puts 'Computer Is Guessing...'
       sleep(1)

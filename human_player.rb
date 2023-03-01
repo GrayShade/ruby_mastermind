@@ -3,9 +3,7 @@
 require_relative 'player'
 # This is intended to be a class
 class HumanPlayer < Player
-  def initialize
-    super
-  end
+  # def initialize; end
 
   def select_role
     puts 'Do you want to be the creator(c) of secret code or the breaker(b)?'
@@ -24,7 +22,7 @@ class HumanPlayer < Player
     input = input.split(' ')
     until validate_input(input) == true
       puts
-      puts "Wrong Choice!!! \nPick Again:  (q to quit)"
+      puts "Wrong Choice!!! \nEnter Again:  (q to quit)"
       input = gets.chomp.strip.downcase
       return input if input.to_s == 'q'
 
@@ -38,7 +36,7 @@ class HumanPlayer < Player
     input = gets.chomp.strip.downcase
     until %w[y n].include?(input)
       puts
-      puts "Wrong Choice!!! \nPick Again:"
+      puts "Wrong Choice!!! \nEnter y(Yes) to play again or n(No) to quit:"
       input = gets.chomp.strip.downcase
     end
     input
