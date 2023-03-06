@@ -2,7 +2,7 @@
 
 require_relative 'utilmod'
 
-# This is intended to be a module as there will be only methods or will be?
+# This class is basicaly used to display data to the screen
 class Board
   include UtilMod
   def initialize; end
@@ -30,7 +30,7 @@ class Board
       puts 'Enter Choice:  (q to quit)'
     else
       puts 'Computer Is Guessing...'
-      sleep(1)
+      sleep(1.2) # seconds
     end
   end
 
@@ -56,9 +56,9 @@ class Board
     end
   end
 
-  def display_end_screen
+  def display_end_screen(secret_choice)
     puts
-    puts 'You chose to end the game!'
+    puts 'You chose to end the game!' if secret_choice.to_s == 'q'
     puts 'Press Y to replay or N to quit from Program'
   end
 end

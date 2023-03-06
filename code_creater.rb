@@ -1,22 +1,18 @@
 # frozen_string_literal: false
 
-# this class defines Logic for Computer player
+require_relative 'utilmod'
+# this class defines Logic for Computer player as code creator
 class CodeCreator
-  def initialize; end
+  include UtilMod
+  attr_accessor :sure_presnt, :hints_arr
+
+  def initialize
+    self.sure_presnt = []
+  end
 
   def cater_human_creatr; end
 
   def cater_cmputr_creatr(comptr_secrt_choice, humn_turn_choice)
-    corect_positn_arr = []
-    wrong_positon_arr = []
-    comptr_secrt_choice.each_with_index do |ele, idx|
-      humn_turn_choice.each_with_index do |ele2, idx2|
-        corect_positn_arr << ele if ele == ele2 && idx == idx2
-        wrong_positon_arr << ele if ele == ele2 && idx != idx2
-      end
-    end
-    hints_arr = [corect_positn_arr.length, wrong_positon_arr.length]
-    print "hints_arr: #{hints_arr}\n"
-    hints_arr
+    create_hints_array_utilmod(comptr_secrt_choice, humn_turn_choice)
   end
 end

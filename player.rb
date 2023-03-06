@@ -1,7 +1,7 @@
-require_relative 'utilmod'
 # frozen_string_literal: false
 
-# This is parent player class of computer_player & human_player classes
+require_relative 'utilmod'
+# This is parent player class of ComputerPlayer & HumanPlayer classes
 class Player
   include UtilMod
   def initialize; end

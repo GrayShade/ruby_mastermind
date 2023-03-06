@@ -7,7 +7,8 @@ require_relative 'human_player'
 require_relative 'code_breaker'
 require_relative 'code_creater'
 
-# This is intended to be a class, for now atleast
+# This is main class which is used to start game & accesses many other classes
+# via objects
 class Game
   attr_accessor :guesses, :board_obj, :plyr_obj, :humn_plyr_obj,
                 :comptr_plyr_obj, :breaker_logic_obj, :creater_logic_obj
@@ -46,7 +47,7 @@ class Game
       humn_secrt_choice = humn_plyr_obj.inpt_choice
       # humn_secrt_choice = %w[r g o c]
       if humn_secrt_choice == 'q'
-        end_game
+        end_game(humn_secrt_choice)
         # return or lines after end_game function will start execution after
         # end_game sub functions completion:
         return
@@ -67,7 +68,7 @@ class Game
       while guesses >= 1
         humn_turn_choice = humn_plyr_obj.inpt_choice
         if humn_turn_choice == 'q'
-          end_game
+          end_game(humn_turn_choice)
           # return or lines after end_game function will start execution after
           # end_game sub functions completion:
           return
@@ -82,14 +83,14 @@ class Game
     def process_result(humn_plyr_role, turn_result, comptr_secrt_choice)
       if turn_result[0] == 4 || guesses.zero?
         board_obj.define_announce_result(humn_plyr_role, turn_result, comptr_secrt_choice)
-        end_game
+        end_game(comptr_secrt_choice)
       else
         board_obj.show_turn_output(humn_plyr_role, turn_result, guesses)
       end
     end
 
-    def end_game
-      board_obj.display_end_screen
+    def end_game(secret_choice)
+      board_obj.display_end_screen(secret_choice)
       input = humn_plyr_obj.end_game_input
       if input == 'y'
         self.guesses = 12

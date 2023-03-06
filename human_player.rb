@@ -1,10 +1,8 @@
 # frozen_string_literal: false
 
 require_relative 'player'
-# This is intended to be a class
+# # This is human player class inherited from Player Class
 class HumanPlayer < Player
-  # def initialize; end
-
   def select_role
     puts 'Do you want to be the creator(c) of secret code or the breaker(b)?'
     role = gets.chomp.strip.downcase

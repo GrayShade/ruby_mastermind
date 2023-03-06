@@ -1,10 +1,10 @@
 # frozen_string_literal: false
+
 require_relative 'player'
 require_relative 'utilmod'
-# This is intended to be a class
+# This is computer player class inherited from Player Class
 class ComputerPlayer < Player
   include UtilMod
-  def initialize; end
 
   def inpt_choice
     input = show_colors_utilmod.sample(4)
